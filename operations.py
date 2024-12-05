@@ -88,3 +88,27 @@ def display_books(books: list[Book] = None) -> None:
             f"ID: {book.id}, Название: {book.title}, Автор: {book.author}, "
             f"Год: {book.year}, Статус: {book.status}"
         )
+
+
+def update_status(book_id: int, status: str) -> None:
+    """
+    Обновляет статус книги по её уникальному идентификатору (ID).
+
+    Args:
+        book_id (int): Уникальный идентификатор книги.
+        status (str): Новый статус книги. Доступны значения: "в наличии", "выдана".
+    """
+    if status not in ["в наличии", "выдана"]:
+        print("Ошибка: недопустимый статус.")
+        return
+
+    data = load_data()
+    book = next((b for b in data if b.id == book_id), None)
+
+    if not book:
+        print("Ошибка: книга с таким ID не найдена.")
+        return
+
+    book.status = status
+    save_data(data)
+    print(f"Статус книги с ID {book_id} обновлен на '{status}'.")
